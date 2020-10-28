@@ -1,0 +1,41 @@
+body {
+    background: darkgray;
+}
+
+li {
+    font-family: 'Roboto', sans-serif;
+    list-style-type: none;
+}
+
+input[type="checkbox"] {
+    
+}
+
+input[type="checkbox"]:checked {
+    display: inline-block;
+}
+
+input#bullet {
+    color: red;
+    display: inline;
+    border-right-width: 1px;
+    border-left-width: 0px;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    border-color: rgb(200, 200, 200);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+button#submit {
+    display: inline;
+    margin-left: -5px;
+    border-left-width: 1px;
+    border-right-width: 0px;
+    border-bottom-width: 0px;
+    border-top-width: 0px;
+    border-color: rgb(200, 200, 200);
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    box-shadow: rgba(200, 200, 200, 0);
+}
