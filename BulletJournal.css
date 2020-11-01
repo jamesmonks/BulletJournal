@@ -59,3 +59,12 @@ button#submit {
     border-bottom-right-radius: 5px;
     box-shadow: rgba(200, 200, 200, 0);
 }
+
+.timestamp {
+    color: red;
+    text-align: center;
+}
+
+.entry {
+    font-style: italic;
+}

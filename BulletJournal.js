@@ -26,31 +26,40 @@ function addBullet(event) {
     let d = new Date();
     let startTime = d.getTime();
 
+    //div_entry
     let tf = $("#bullet");
-    let txt = "<SPAN class='memo'>" + tf.val() + "</SPAN>" + 
-              "<SPAN class='timestamp'>" + startTime + "</SPAN>";
+    let div_entry = $("<DIV>").attr({ class: "col-12 col-md-8 entry" }).append(tf.val());
     tf.val("");
+    let chk = $("<input>").attr({ type: "checkbox" });
+    chk.on("click", showMe);
+    $(div_entry).prepend(chk);
 
-    let bullet;
-    let li_id = "li_" + startTime;
-    if (tasklist.length % 2 == 0)
-        bullet = $("<li>").attr({ id: li_id, class: "zero" });
-    else
-        bullet = $("<li>").attr({ id: li_id, class: "one" });
-    let chk = document.createElement("input");
+    //div_stamp
+    let div_stamp = $("<DIV>").attr({ class: "col-2 timestamp" }).append(startTime);
+
+    //div_btn
+    let div_btn = $("<div>").attr({ class: "col-1 align-self-end" });
     let btn = $("<input>").attr({ type: "button", value: "delete"});
-
     btn.on("click", showMe);
-    chk.addEventListener("click", showMe);
-    chk["type"] = "checkbox";
-    console.log(txt);
-    console.log(chk);
-    $(bullet).html(txt);
-    $(bullet).prepend(chk).append(btn);
-    let bulletList = $("#bulletList");
-    bulletList.append(bullet);
+    $(div_btn).append(btn);
 
+    //li
+    let li_id = "li_" + startTime;
+    let bullet;
+    if (tasklist.length % 2 == 0)
+        bullet = $("<li>").attr({ id: li_id, class: "zero row" });
+    else
+        bullet = $("<li>").attr({ id: li_id, class: "one row" });
+    
+    $(bullet).append(div_entry).append(div_stamp).append(div_btn);
+
+    //div_row
+    //let div_row = $("<DIV>").attr({ class: "row" }).append(bullet);
+    $("#bulletList").append(bullet);
+
+    
     tasklist.push({ id: li_id, timeStamp: startTime });
+    console.log(tasklist);
 }
 
 function createList() {
@@ -63,9 +72,9 @@ function showMe(event) {
     let expiryTime = startTime + _2days_;
     console.log(d.getTime());
     let target = event.target;
-    let liObject = $(target).parent();
+    let liObject = $(target).parent().parent();
     $(liObject).remove();
     console.log(target);
-    console.log($(target).parent());
+    console.log($(target).parent().parent().type);
     //document.removeChild(parent);
 }
