@@ -8,6 +8,13 @@ li {
     list-style-type: none;
 }
 
+li {
+    vertical-align: middle;
+    align-content: center;
+    font-size: 1.25em;
+    border-radius: 5px;
+}
+
 li.zero {
     background-color: white;
 }
@@ -26,10 +33,10 @@ li input[type="button"] {
 
 input[type="checkbox"] {
     animation-duration: 500ms;
+    vertical-align: middle;
 }
 
 input[type="checkbox"]:checked {
-    display: inline-block;
     transform: rotate(360deg);
     transition: cubic-bezier(0.755, 0.05, 0.855, 0.06);
     transition-duration: 500ms;
@@ -67,4 +74,8 @@ button#submit {
 
 .entry {
     font-style: italic;
+}
+
+span.entry_text {
+    margin-left: 1em;
 }
