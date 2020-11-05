@@ -57,7 +57,7 @@ function addBullet(event) {
 
     //btn
     let btn = $("<button>").append("Delete");
-    $(btn).attr({ type: "button", class: "btn btn-danger col-4 col-sm-3 col-md-2 pull-right", id: _BUTTON_PREFIX_ + startTime });
+    $(btn).attr({ type: "button", class: "btn delete btn-danger col-4 col-sm-3 col-md-2 pull-right", id: _BUTTON_PREFIX_ + startTime });
     btn.on("click", deleteEntry);
 
     //li

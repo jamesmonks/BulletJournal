@@ -2,28 +2,33 @@ body {
     background: darkgray;
 }
 
-li {
+ol#bulletList {
+    margin-top: 6px;
+}
+
+ol.container li {
     display: flex;
     font-family: 'Roboto', sans-serif;
     list-style-type: none;
     font-size: 1.25em;
-    border-radius: 4px;
+    border-top-left-radius: 8px;
+    border-bottom-right-radius: 8px;
 }
 
-ul>li:nth-child(odd) {
+ol.container>li:nth-child(odd) {
     background-color: white;
 }
 
-ul>li:nth-child(even) {
+ol.container>li:nth-child(even) {
     background-color: rgb(220, 220, 220);;
 }
 
 
-li span {
+ol.container li span {
     color: rgb(80, 80, 80)
 }
 
-li input[type="button"] {
+ol.container li input[type="button"] {
     flex-grow: 1;
 }
 
@@ -34,7 +39,7 @@ input[type="checkbox"] {
 
 input[type="checkbox"]:checked {
     transform: rotate(360deg);
-    transition: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    transition: ease-in-out;
     transition-duration: 500ms;
 }
 
@@ -74,6 +79,13 @@ button#submit {
 
 .struck {
     text-decoration: line-through;
+}
+
+.btn.delete {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 8px;
 }
 
 span.entry_text {
