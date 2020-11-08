@@ -2,40 +2,58 @@ body {
     background: darkgray;
 }
 
-li {
+#bulletNav {
+    margin-top: -50px;
+}
+
+ol#bulletList {
+    opacity: 0;
+    margin-top: 6px;
+}
+
+ol.container li {
     display: flex;
     font-family: 'Roboto', sans-serif;
     list-style-type: none;
+    font-size: 1.25em;
+    border-top-left-radius: 8px;
+    border-bottom-right-radius: 8px;
 }
 
-li.zero {
+ol.container>li:nth-child(odd) {
     background-color: white;
 }
 
-li.one {
-    background-color: rgb(220, 220, 220);
+ol.container>li:nth-child(even) {
+    background-color: rgb(220, 220, 220);;
 }
 
-li span {
+
+ol.container li span {
     color: rgb(80, 80, 80)
 }
 
-li input[type="button"] {
+ol.container li input[type="button"] {
     flex-grow: 1;
 }
 
 input[type="checkbox"] {
     animation-duration: 500ms;
+    vertical-align: middle;
 }
 
 input[type="checkbox"]:checked {
-    display: inline-block;
     transform: rotate(360deg);
-    transition: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    transition: ease-in-out;
     transition-duration: 500ms;
 }
 
-input#bullet {
+div#bulletItemDiv {
+    opacity: 0;
+    margin-left: 18px;
+}
+
+/* input#bullet {
     color: red;
     display: inline;
     border-right-width: 1px;
@@ -58,7 +76,7 @@ button#submit {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     box-shadow: rgba(200, 200, 200, 0);
-}
+} */
 
 .timestamp {
     color: red;
@@ -67,4 +85,19 @@ button#submit {
 
 .entry {
     font-style: italic;
+}
+
+.struck {
+    text-decoration: line-through;
+}
+
+.btn.delete {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 8px;
+}
+
+span.entry_text {
+    margin-left: 1em;
 }
