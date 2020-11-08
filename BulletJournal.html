@@ -154,5 +154,41 @@
       </div>
     </form>
   </div>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-database.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyDXQTWpTcqrwy127WmW7cTUiPrCfl9lmMs",
+      authDomain: "bujo-todo.firebaseapp.com",
+      databaseURL: "https://bujo-todo.firebaseio.com",
+      projectId: "bujo-todo",
+      storageBucket: "bujo-todo.appspot.com",
+      messagingSenderId: "946796899496",
+      appId: "1:946796899496:web:60b6a60c6586282873a69d"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    var database = firebase.database();
+    
+    // database.ref("/bullets").once("value").then(function(snapshot){
+    //   let obj = snapshot.val();
+    //   console.log(obj);
+    //   Object.keys(obj).forEach(key => {
+    //     console.log(key, obj[key]);
+    //   });
+    // });
+    
+  </script>
+
+
+
+
 </body>
 </html>

@@ -4,6 +4,7 @@ $(function(){
 });
 
 let tasklist = [];
+let initializing = true;
 
 const _2DAYS_ = 1000 * 60 * 60 * 24 * 2;
 const _LIST_PREFIX_     = "list_";
@@ -17,14 +18,24 @@ console.log("anything blergh?");
 function init()
 {
     console.log("init");
-    $("#bulletItem").on("submit", addBullet);
-    //$("#submit").on("click", addBullet(event));
+    $("#bulletItem").on("submit", addBulletListener);
+    //$("#submit").on("click", addBulletListener(event));
 
     //TODO: import tasks and set timer
+    database.ref("/bullets").once("value").then(function(snapshot){
+        let bullets = snapshot.val();
+        console.log(bullets);
+        Object.keys(bullets).forEach(key => {
+          console.log(key, bullets[key]);
+          addBullet(bullets[key]);
+        });
+    });
+
     //tasklist.push({time_id:id, timeStamp:timestamp});Timers
     setInterval(updateTimers, 1000);
     $("#bujoTitle").modal("show");
     $("#bujoTitle").on("hide.bs.modal", animateMenu);
+
 }
 
 function animateMenu() {
@@ -33,14 +44,16 @@ function animateMenu() {
     $("#bujoTitle").modal("hide");
     let delay = 1500;
     // $("#bulletNav").animate( { "margin-top": "0px"}, delay, "linear", showEntries );
-    $("#bulletNav").animate( { "margin-top": "0px"}, delay, "linear", showEntryInput);
-    // setTimeout(showEntryInput, delay/2);
+    $("#bulletNav").animate( { "margin-top": "0px"}, delay, "linear", showEntries);
+
+    initializing = false;
 }
 
 function showEntries() {
     console.log("showEntries");
-    let delay = 1200;
-    $("#bulletList").animate( { "opacity": "1.0"}, delay, "linear", showEntryInput);
+    let delay = 600;
+    $("#bulletList").animate( { "opacity": "1.0"}, delay, "linear");
+    setTimeout(showEntryInput, delay/2);
 }
 
 function showEntryInput() {
@@ -51,26 +64,41 @@ function showEntryInput() {
 
 function nothing() {}
 
-function addBullet(event) {
-    console.log("addBullet");
+function addBulletListener(event) {
+    console.log("addBulletListener");
     event.preventDefault();
 
     let tf = $("#bullet");
-    //console.log(tf.val());
+    let bulletItem = tf.val();
+    tf.val("");
+        //console.log(tf.val());
     //let rx = /^\s*$/;
     //console.log("whitespace:" + tf.val().search(/^\s*$/));
-    if (tf.val().search(/^\s*$/) > -1)
+    if (bulletItem.search(/^\s*$/) > -1)
         return;
 
     let d = new Date();
     let startTime = d.getTime();
+    
+    let obj = { 
+        timeStamp: startTime,
+        time_id: _TIME_PREFIX_ + startTime.toString(),
+        bullet_item: bulletItem
+    };
+
+
+    addBullet(obj);
+}
+
+function addBullet(obj) {
+    let startTime = obj.timeStamp;
+
     let li_id = "li_" + startTime;
 
     //div_entry
-    let lbl_text = $("<LABEL>").append( tf.val() );
+    let lbl_text = $("<LABEL>").append( obj.bullet_item );
     $(lbl_text).attr({ class:"entry_text", for:_CHECKBOX_PREFIX_ + startTime, id: _LABEL_PREFIX_ + startTime });
     let div_entry = $("<DIV>").attr({ class: "col-12 col-md-8 entry" }).append(lbl_text);
-    tf.val("");
     let chk = $("<input>").attr({ type: "checkbox", class: "mr-2", id: _CHECKBOX_PREFIX_ + startTime });
     // let chk = $("<input>").attr({ type: "checkbox", class: "form-check-input mr-2", id: li_id + "_chk" });
     chk.on("click", strikeThrough);
@@ -92,16 +120,27 @@ function addBullet(event) {
     //     $(bullet).addClass(["zero"]);
     // else
     //     $(bullet).addClass(["one"]);
+
     
-    $(bullet).css("opacity", "0").animate( { "opacity": "1.0"}, 500, "linear");
+    if (!initializing)
+    {
+        $(bullet).css("opacity", "0").animate( { "opacity": "1.0"}, 500, "linear");
+        database.ref("/bullets/" + startTime).set( obj );
+    }
+    else
+    {
+        
+    }
+
+    //push to database
+    tasklist.push( obj );
 
     $(bullet).append(div_entry).append(spn_stamp).append(btn);
 
     //div_row
     //let div_row = $("<DIV>").attr({ class: "row" }).append(bullet);
     $("#bulletList").append(bullet);
-    
-    tasklist.push({ time_id: _TIME_PREFIX_ + startTime.toString(), timeStamp: startTime });
+
     console.log(tasklist);
 }
 
@@ -208,12 +247,16 @@ function two_char_int(val) {
  * @param {*} event 
  */
 function deleteEntry(event) {
+    console.log("deleteEntry");
+    let delay = 300;
     let target = event.target;
     //let liObject = $(target).parent();
     console.log(target.id);
     console.log($(target).parent());
-    console.log(tasklist);
     let timeStamp = parseInt(get_stripped_id(target.id));
+
+    //$("#" + _LIST_PREFIX_ + timeStamp).animate( { "opacity" : "0" }, 2350, "linear", deleteAnimationFinished(event));
+    //$("#" + _LIST_PREFIX_ + timeStamp).one("animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", deleteAnimationFinished);
     deleteID(timeStamp);
     // for (let i=0; i<tasklist.length; i++)
     // {
@@ -223,11 +266,25 @@ function deleteEntry(event) {
     //         i=tasklist.length;
     //     }
     // }
-    console.log(tasklist);
 //    $(liObject).remove();
     //document.removeChild(parent);
+
+
+    //bujo-todo
 }
 
+// function deleteAnimationFinished(event) {
+//     console.log("deleteAnimationFinished");
+//     console.log("event:", event);
+//     let target = event.target;
+//     //let liObject = $(target).parent();
+//     console.log(target.id);
+//     console.log($(target).parent());
+//     console.log(tasklist);
+//     let timeStamp = parseInt(get_stripped_id(target.id));
+//     deleteID(timeStamp);
+//     console.log(tasklist);
+// }
 
 function deleteID(timeStamp)
 {
@@ -237,6 +294,7 @@ function deleteID(timeStamp)
         {
             $("#" + _LIST_PREFIX_ + timeStamp).remove();
             tasklist.splice(i, 1);
+            database.ref("/bullets/" + timeStamp).remove();
             return;
         }
     }
