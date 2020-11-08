@@ -28,6 +28,9 @@ ol.container>li:nth-child(even) {
     background-color: rgb(220, 220, 220);;
 }
 
+ol.container>li:nth-child(even) button {
+    color: rgb(255, 224, 124);
+}
 
 ol.container li span {
     color: rgb(80, 80, 80)

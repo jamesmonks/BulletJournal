@@ -19,9 +19,7 @@ function init()
 {
     console.log("init");
     $("#bulletItem").on("submit", addBulletListener);
-    //$("#submit").on("click", addBulletListener(event));
 
-    //TODO: import tasks and set timer
     database.ref("/bullets").once("value").then(function(snapshot){
         let bullets = snapshot.val();
         console.log(bullets);
@@ -83,9 +81,9 @@ function addBulletListener(event) {
     let obj = { 
         timeStamp: startTime,
         time_id: _TIME_PREFIX_ + startTime.toString(),
-        bullet_item: bulletItem
+        bullet_item: bulletItem,
+        completed: false
     };
-
 
     addBullet(obj);
 }
@@ -103,6 +101,12 @@ function addBullet(obj) {
     // let chk = $("<input>").attr({ type: "checkbox", class: "form-check-input mr-2", id: li_id + "_chk" });
     chk.on("click", strikeThrough);
     $(div_entry).append(chk).append(lbl_text);
+
+    if (obj.completed == true)
+    {
+        $(lbl_text).toggleClass("struck");
+        $(chk).attr( {checked: true})
+    }
 
     //spn_stamp
     let spn_stamp = $("<SPAN>").attr({ class: "col-4 offset-4 col-sm-3 offset-sm-6 col-md-2 offset-md-0 text-right timestamp align-text-bottom" });
@@ -190,7 +194,7 @@ function time_left(time_eval) {
         // console.log("time_left");
         let d = new Date();
         let curr_time = d.getTime();
-        let deadline = time_eval + (_2DAYS_/8);
+        let deadline = time_eval + (_2DAYS_);
         // console.log([deadline, curr_time]);
         // console.log([deadline - curr_time, _2DAYS_]);
         return Math.max(deadline - curr_time, 0);
@@ -306,10 +310,13 @@ function deleteID(timeStamp)
  * @param {*} event 
  */
 function strikeThrough(event) {
-    let obj_id = "#" + _LABEL_PREFIX_ + get_stripped_id(event.target.id);
-    console.log(obj_id);
-    console.log($(obj_id));
-    $(obj_id).toggleClass("struck");
+    let blt_id = get_stripped_id(event.target.id);
+    let lbl_id = "#" + _LABEL_PREFIX_ + blt_id;
+    console.log(lbl_id);
+    console.log($(lbl_id));
+    $(lbl_id).toggleClass("struck");
+    let struck = $(lbl_id).hasClass("struck");
+    database.ref("/bullets/" + blt_id + "/completed").set( struck );
 }
 
 /**
