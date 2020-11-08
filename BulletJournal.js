@@ -23,7 +23,33 @@ function init()
     //TODO: import tasks and set timer
     //tasklist.push({time_id:id, timeStamp:timestamp});Timers
     setInterval(updateTimers, 1000);
+    $("#bujoTitle").modal("show");
+    $("#bujoTitle").on("hide.bs.modal", animateMenu);
 }
+
+function animateMenu() {
+    console.log("animateMenu");
+    $("#bujoTitle").off("hide.bs.modal", animateMenu);
+    $("#bujoTitle").modal("hide");
+    let delay = 1500;
+    // $("#bulletNav").animate( { "margin-top": "0px"}, delay, "linear", showEntries );
+    $("#bulletNav").animate( { "margin-top": "0px"}, delay, "linear", showEntryInput);
+    // setTimeout(showEntryInput, delay/2);
+}
+
+function showEntries() {
+    console.log("showEntries");
+    let delay = 1200;
+    $("#bulletList").animate( { "opacity": "1.0"}, delay, "linear", showEntryInput);
+}
+
+function showEntryInput() {
+    console.log("showEntryInput");
+    let delay = 1200;
+    $("#bulletItemDiv").animate( {"opacity": "1.0"}, delay, "linear");
+}
+
+function nothing() {}
 
 function addBullet(event) {
     console.log("addBullet");
@@ -67,6 +93,8 @@ function addBullet(event) {
     // else
     //     $(bullet).addClass(["one"]);
     
+    $(bullet).css("opacity", "0").animate( { "opacity": "1.0"}, 500, "linear");
+
     $(bullet).append(div_entry).append(spn_stamp).append(btn);
 
     //div_row
@@ -199,6 +227,7 @@ function deleteEntry(event) {
 //    $(liObject).remove();
     //document.removeChild(parent);
 }
+
 
 function deleteID(timeStamp)
 {

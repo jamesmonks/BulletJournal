@@ -2,6 +2,10 @@ body {
     background: darkgray;
 }
 
+#bulletNav {
+    margin-top: -50px;
+}
+
 ol#bulletList {
     margin-top: 6px;
 }
@@ -43,7 +47,12 @@ input[type="checkbox"]:checked {
     transition-duration: 500ms;
 }
 
-input#bullet {
+div#bulletItemDiv {
+    opacity: 0;
+    margin-left: 18px;
+}
+
+/* input#bullet {
     color: red;
     display: inline;
     border-right-width: 1px;
@@ -66,7 +75,7 @@ button#submit {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     box-shadow: rgba(200, 200, 200, 0);
-}
+} */
 
 .timestamp {
     color: red;

@@ -23,18 +23,16 @@
 </head>
 <body>
     
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Expand at md</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" 
-      aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark" id="bulletNav">
+    <a class="navbar-brand offset-1" href="#">BuJo Braindump</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" 
+      data-target="#navbarsExample04" aria-controls="navbarsExample04" 
+      aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
   
     <div class="collapse navbar-collapse" id="navbarsExample04">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-        </li>
         <li class="nav-item">
           <a class="nav-link"
             href="https://getbootstrap.com/docs/4.0/getting-started/introduction/"
@@ -42,7 +40,7 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="programminglinks" data-toggle="dropdown" 
-            aria-haspopup="true" aria-expanded="false">Dropdown</a>
+            aria-haspopup="true" aria-expanded="false">Reference</a>
           <div class="dropdown-menu" aria-labelledby="programminglinks">
             <a class="dropdown-item" 
               href="https://getbootstrap.com/docs/4.0/getting-started/introduction/"
@@ -50,18 +48,18 @@
             <a class="dropdown-item" 
               href="https://www.freecodecamp.org/news/css-selectors-cheat-sheet/"
               target="_blank">CSS Cheat Sheet</a>
-            <a class="dropdown-item" 
+              <a class="dropdown-item" 
               href="https://api.jquery.com/"
               target="_blank">jquery API</a>
+            <a class="dropdown-item" 
+              href="https://www.rexegg.com/regex-quickstart.html"
+              target="_blank">regEx cheatsheet</a>
           </div>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#" data-toggle="modal" data-target="#bujoInfo">What is this?</a>
         </li>        
       </ul>
-      <form class="form-inline my-2 my-md-0">
-        <input class="form-control" type="text" placeholder="Search">
-      </form>
     </div>
   </nav>
 
@@ -82,7 +80,7 @@
           bucket to jot down things on the go, but to prevent it from being a list that doesn't get
           used anywhere, the self-destruct nature requires the user to evaluate whether or not they
           want to add this item to their bullet journal within 48 hours, otherwise it will be lost
-          forever.
+          forever ... or until it is added again.
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
@@ -91,6 +89,34 @@
     </div>
   </div>
 
+  <div class="modal fade" id="bujoTitle" tabindex="-1" role="dialog" 
+  aria-labelledby="projectTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="projectTitle">Bullet Journal Braindump</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <em>What is this?</em>
+          <br />
+          <br />
+          <p>Bullet Journaling is a methodology that requires urgency and persistent reflection. This
+          self-destructing online list is used as an aid but not a replacement. When inspiration
+          strikes and you don't have a bullet journal handy, this memo list is used as an inspiration
+          bucket to jot down things on the go, but to prevent it from being a list that doesn't get
+          used anywhere, the self-destruct nature requires the user to evaluate whether or not they
+          want to add this item to their bullet journal within 48 hours, otherwise it will be lost
+          forever ... or until it is added again.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
     <!-- <ul id="notBulletList" class="container">
         <li id="li_0" class="form-row one mb-1">
             <div class="col-12 col-md-8">
@@ -117,12 +143,16 @@
     </ul> -->
     
 
-    <ol id="bulletList" class="container">
-    </ol>
+  <ol id="bulletList" class="container">
+  </ol>
 
-    <form id="bulletItem">
-        <input type="text" id="bullet" placeholder="What do you desire?">
-        <button id="submit">Add Item</button>
+  <div id="bulletItemDiv">
+    <form id="bulletItem" class="container">
+      <div class="row">
+        <input type="text" class="form-control col-6" id="bullet" placeholder="What do you desire?">
+        <button id="submit" class="btn btn-primary">Add Item</button>
+      </div>
     </form>
+  </div>
 </body>
 </html>
