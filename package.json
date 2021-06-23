@@ -1,0 +1,23 @@
+{
+  "name": "bulletjournal",
+  "version": "1.0.0",
+  "description": "Self destruct to-do list, to prevent a to-do list",
+  "main": "BulletJournal.js",
+  "scripts": {
+    "deploy": "gh-pages -d dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamesmonks/BulletJournal.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jamesmonks/BulletJournal/issues"
+  },
+  "homepage": "https://jamesmonks.github.io/BulletJournal",
+  "dependencies": {
+    "gh-pages": "^3.2.3"
+  }
+}
