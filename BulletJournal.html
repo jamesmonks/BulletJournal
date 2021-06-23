@@ -142,6 +142,87 @@
         </li>
     </ul> -->
     
+  <!----------------------------------->
+  <!-- SIGNUP VIA EMAIL AND PASSWORD -->
+  <!----------------------------------->
+  <div class="modal fade" id="email-signup-modal" tabindex="-1" role="dialog" aria-labelledby="email-signup-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="email-signup-title">Please fill in info</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="signup-email">E-Mail</label>
+              <input type="email" class="form-control" id="signup-email-email" aria-describedby="signup-email-email-help" placeholder="Enter e-mail" />
+              <small id="signup-email-email-help" class="form-text text-muted-amended">Please enter your e-mail address.</small>
+            </div>
+            <div class="form-group">
+              <label for="signup-email-password">Password</label>
+              <input type="password" class="form-control" id="signup-email-password" aria-describedby="signup-email-password-help" placeholder="Create a password" />
+              <small id="signup-email-password-help" class="form-text text-muted-amended">Create a password</small>
+            </div>
+            <div class="form-group">
+              <label for="signup-email-password2">Password</label>
+              <input type="password" class="form-control" id="signup-email-password2" aria-describedby="signup-email-password-help2" placeholder="Re-enter password" />
+              <small id="signup-email-password-help2" class="form-text text-muted-amended">Re-enter your password</small>
+            </div>
+  
+            <input id="email-signup-button" type="button" class="btn btn-primary" value="Signup" />
+            <input id="email-signup-login-button" type="button" class="btn btn-primary" value="Login" />
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!---------------------------------->
+  <!-- LOGIN VIA EMAIL AND PASSWORD -->
+  <!---------------------------------->
+  <div class="modal fade" id="email-login-modal" tabindex="-1" role="dialog" 
+  aria-labelledby="email-login-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="email-login-title">Please Enter login info</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="login-email">E-Mail</label>
+              <input type="email" class="form-control" id="login-email" aria-describedby="login-email-help" placeholder="Enter e-mail" />
+              <small id="login-email-help" class="form-text text-muted-amended">Please enter the e-mail you used to sign up.</small>
+            </div>
+            <div class="form-group">
+              <label for="login-password">Password</label>
+              <input type="password" class="form-control" id="login-password" aria-describedby="login-password-help" placeholder="Enter password" />
+              <small id="login-password-help" class="form-text text-muted-amended">(Not the password for your email)</small>
+            </div>
+            <div class="form-group">
+              <label for="permanent-email-login">Remember me</label>
+              <input type="checkbox" class="form-check-input" id="permanent-email-login" aria-describedby="permanent-email-login-help" />
+              <small id="permanent-email-login-help" class="form-text text-muted-amended">Automatic login, this should not be checked on unsecured or shared computers</small>
+            </div>
+            <input id="email-login-button" type="button" class="btn btn-primary" value="Login" />
+            <input id="email-login-signup-button" type="button" class="btn btn-primary" value="Signup" />
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <ol id="bulletList" class="container">
   </ol>
@@ -149,7 +230,7 @@
   <div id="bulletItemDiv">
     <form id="bulletItem" class="container">
       <div class="row">
-        <input type="text" class="form-control col-6" id="bullet" placeholder="What do you desire?">
+        <input type="text" class="form-control col-6" id="bullet" placeholder="What do you want to add?">
         <button id="submit" class="btn btn-primary">Add Item</button>
       </div>
     </form>
@@ -161,30 +242,10 @@
   <!-- TODO: Add SDKs for Firebase products that you want to use
       https://firebase.google.com/docs/web/setup#available-libraries -->
   <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-auth.js"></script>
 
   <script>
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-      apiKey: "AIzaSyDXQTWpTcqrwy127WmW7cTUiPrCfl9lmMs",
-      authDomain: "bujo-todo.firebaseapp.com",
-      databaseURL: "https://bujo-todo.firebaseio.com",
-      projectId: "bujo-todo",
-      storageBucket: "bujo-todo.appspot.com",
-      messagingSenderId: "946796899496",
-      appId: "1:946796899496:web:60b6a60c6586282873a69d"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    var database = firebase.database();
-    
-    // database.ref("/bullets").once("value").then(function(snapshot){
-    //   let obj = snapshot.val();
-    //   console.log(obj);
-    //   Object.keys(obj).forEach(key => {
-    //     console.log(key, obj[key]);
-    //   });
-    // });
-    
+ 
   </script>
 
 
