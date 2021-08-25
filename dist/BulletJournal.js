@@ -9,6 +9,7 @@ var firebaseConfig;
 
 let tasklist = [];
 let initializing = true;
+let guest = false;
 
 const _2DAYS_ = 1000 * 60 * 60 * 24 * 2;
 const _LIST_PREFIX_     = "list_";
@@ -26,7 +27,18 @@ async function init()
     await firebase_setup();
     init_modal_buttons();
 
+    firebase.auth().onAuthStateChanged(function(user) {
+        console.log(user);
+        if (user) {
+            $("#login-button").addClass("d-none").removeClass("d-flex");
+            logged_in();
+        } else {
+            $("#login-button").addClass("d-flex").removeClass("d-none");
+        }
+    });
 
+    $("#login-button").on("click", load_login);
+    
     startAnimations();
 }
 
@@ -46,6 +58,7 @@ async function firebase_setup()
     firebase.initializeApp(firebaseConfig);
     database = firebase.database();
     auth = firebase.auth();
+    auth.setPersistence(firebase.auth.Auth.Persistence.NONE);
     
     // email = "jameszmonks@gmail.com";
     // pass = "testing123";
@@ -303,7 +316,7 @@ function updateTimers() {
     //console.log("updateTimers()");
     for (let i=0; i < tasklist.length; i++) 
     {
-        if (allow_bullet(tasklist[i]))
+        if (bullet_timed_out(tasklist[i]))
         {
             $("#" + _TIME_PREFIX_ + tasklist[i].key).text(formatted_time_left(tasklist[i].timeStamp));
         }
@@ -404,7 +417,9 @@ function startAnimations(){
 
 function load_login(event)
 {
-    $(event.currentTarget).off(event.type, load_login);
+    if (event)
+        if (event.type != "click")
+            $(event.currentTarget).off(event.type, load_login);
     $("#email-login-modal").modal("show");
 }
 
@@ -414,6 +429,25 @@ function animateMenu() {
     $("#bulletNav").animate( { "margin-top": "0px"}, delay, "linear", showEntries);
 
     initializing = false;
+}
+
+function sign_out() {
+    auth.signOut();
+    reset_display();
+    reset_variables();
+}
+
+function reset_display() {
+    console.log("reset_display");
+    let delay = 1500;
+    $("#bulletNav").animate( { "margin-top": "-50px"}, delay, "linear");
+    $("#bulletList").empty();
+}
+
+function reset_variables() {
+    tasklist = [];
+    initializing = true;
+    guest = false;
 }
 
 function showEntries() {
@@ -440,6 +474,10 @@ function init_modal_buttons()
     //email login
     $("#email-login-button").on("click", login_with_email_event);
     $("#email-login-signup-button").on("click", show_modal_signup_email);
+    $("#email-login-sandbox").on("click", login_with_guest_account);
+
+    //menu logout
+    $("#sign-out-link").on("click", sign_out);
 }
 
 function show_modal_login_email(event = null)
@@ -483,10 +521,20 @@ function login_with_email_event(event = null)
         
         console.log($("#login-email").val());
         console.log($("#login-password").val());
-    }  
+    }
     let email = $("#login-email").val();
     let pass = $("#login-password").val();
-    attempt_login_with_email(email, pass);
+    attempt_login_with_email(email, pass, false);
+}
+
+function login_with_guest_account(event = null)
+{
+    if (event)
+    {
+        event.preventDefault();
+    }
+    guest = true;
+    attempt_login_with_email("sandbox@jamesmonks.com", "testing123", true);
 }
 
 function signup_with_email_event(event = null)
@@ -513,10 +561,12 @@ function signup_with_email_event(event = null)
     }
 }
 
-function attempt_login_with_email(email, pass)
+function attempt_login_with_email(email, pass, is_guest)
 {
     //auth.createUserWithEmailAndPassword(email, pass).catch(email_login_error);
-    auth.signInWithEmailAndPassword(email, pass).then(logged_in).catch(email_login_error);
+    console.log("signin attempts", email, pass);
+    guest = is_guest;
+    auth.signInWithEmailAndPassword(email, pass).catch(email_login_error);
     
     function email_login_error(error) {
         console.log(error);
@@ -543,7 +593,8 @@ function attempt_login_with_email(email, pass)
 function attempt_signup_with_email(email, pass)
 {
     console.log("attempt_signup_with_email", email, pass);
-    try { auth.createUserWithEmailAndPassword(email, pass).then(  logged_in ).catch( signup_failure ); }
+    guest = false;
+    try { auth.createUserWithEmailAndPassword(email, pass).catch( signup_failure ); }
     catch (error)
         { signup_failure(error); } //null arguments to auth function need a catch block
         
@@ -582,12 +633,21 @@ function attempt_signup_with_email(email, pass)
 function logged_in()
 {
     console.log("successful log in");
-    empty_user_variables();
+    load_user_bullets();
     reset_login_modals(true);
     $(".modal.show").modal("hide");
     // $("#email-signup-modal").modal("hide");
     // $("#email-login-modal").modal("hide");
     animateMenu();
+}
+
+function logged_out()
+{
+    reset_login_modals(true);
+    //remove bullets
+    //reset user
+    //reset auth
+    //show login
 }
 
 function reset_login_modals(clear_text = false)
@@ -619,7 +679,7 @@ function reset_login_modals(clear_text = false)
     }
 }
 
-function empty_user_variables()
+function load_user_bullets()
 {
     
     $("#bulletItem").on("submit", addBulletListener);
@@ -640,7 +700,7 @@ function empty_user_variables()
                 obj.key = key;
                 console.log("init:", key);
 
-                if (allow_bullet(obj))
+                if (bullet_timed_out(obj) && !guest)
                 {
                     addBullet(obj);
                         
@@ -652,15 +712,91 @@ function empty_user_variables()
                 }
                 else
                     database.ref(`${auth.currentUser.uid}/bullets/${key}`).remove();
-
             });
         }
+        if (guest)
+        {
+            console.log("adding guest values");
+            $("#bullet").val("The checkbox strikes through the text");
+            $("#bulletItem").trigger("submit");
+            $("#bullet").val("The time on the right is how long this item will live for");
+            $("#bulletItem").trigger("submit");
+            $("#bullet").val("The delete button will remove the todo before the countdown ends");
+            $("#bulletItem").trigger("submit");
+            $("#bullet").val("There's more information on Bullet Journaling on the menu");
+            $("#bulletItem").trigger("submit");
+        }
+    }).then(function() {
+        
     });
 }
 
-function allow_bullet(obj)
+function bullet_timed_out(obj)
 {
     let eval = time_left(obj.timeStamp);
     console.log(`allow_bullet(obj.timeStamp = ${eval})`);
     return (eval > 0);
+}
+
+// JMTODO login failure and success feedback
+function set_invalid(dom_elem, is_invalid = true)
+{
+    console.log(typeof dom_elem === "string");
+    if (typeof dom_elem === "string")
+        dom_elem = (dom_elem.indexOf("#") == -1) ? "#" + dom_elem: dom_elem;
+    if (dom_elem instanceof jQuery)
+    {
+        if (dom_elem.length)
+            for (let i=0; i < dom_elem.length; i++)
+                set_invalid(dom_elem[i], is_invalid);
+        return;
+    }
+
+    if (dom_elem instanceof Element || typeof dom_elem === "string")
+    {
+        console.log("elem or string == true");
+        console.log($(dom_elem));
+        if ($(dom_elem).hasClass("is-invalid"))
+        {
+            console.log("has is-invalid");
+            if (!is_invalid) 
+                $(dom_elem).removeClass("is-invalid");
+        }
+        else{
+            console.log("does not have is-invalid");
+            if (is_invalid)
+                $(dom_elem).addClass("is-invalid")
+        }
+    }
+}
+
+function set_valid(dom_elem, is_valid = true)
+{
+    console.log(typeof dom_elem === "string");
+    if (typeof dom_elem === "string")
+        dom_elem = (dom_elem.indexOf("#") == -1) ? "#" + dom_elem: dom_elem;
+    if (dom_elem instanceof jQuery)
+    {
+        if (dom_elem.length)
+            for (let i=0; i < dom_elem.length; i++)
+                set_invalid(dom_elem[i], is_invalid);
+        return;
+    }
+
+    if (dom_elem instanceof Element || typeof dom_elem === "string")
+    {
+        console.log("elem or string == true");
+        console.log($(dom_elem));
+        if ($(dom_elem).hasClass("is-invalid"))
+        {
+            console.log("has is-invalid");
+            if (!is_invalid) 
+                $(dom_elem).removeClass("is-invalid");
+        }
+        else{
+            console.log("does not have is-invalid");
+            if (is_invalid)
+                $(dom_elem).addClass("is-invalid")
+        }
+    }
 }
