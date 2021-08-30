@@ -1,0 +1,3 @@
+persistent login
+themes
+custom theme(s)
