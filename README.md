@@ -6,5 +6,5 @@ Using the principles behind Bullet Journalling, I created this for when inspirat
 
 Try it out via [github pages](https://jamesmonks.github.io/BulletJournal/)
 
-# Future
+# About this project
 This project is a productivity tool I use. It helped me understand the basics of Bootstrap / Firebase, and is now being tweaked to improve it's functionality.
